@@ -3,286 +3,558 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HKDSE BAFS Ch 13</title>
-    <!-- Tailwind CSS for styling -->
+    <title>HKDSE BAFS Chapter 13: Partnerships</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Lucide Icons -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: '#0f172a',
+                        card: '#1e293b',
+                        primary: '#6366f1',
+                        primaryHover: '#4f46e5',
+                    }
+                }
+            }
+        }
+    </script>
+    
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        .tab-content { display: none; }
-        .tab-content.active { display: block; animation: fadeIn 0.3s; }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* Custom scrollbar for a polished look */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+        /* Tab transitions */
+        .tab-content { 
+            display: none; 
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+        .tab-content.active { 
+            display: block; 
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Mind Map node animations */
+        .mindmap-children {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .mindmap-children.expanded {
+            max-height: 500px; /* Arbitrary large height for transition */
+        }
+        .mindmap-icon {
+            transition: transform 0.3s ease;
+        }
+        .expanded .mindmap-icon {
+            transform: rotate(90deg);
         }
     </style>
 </head>
-<body class="bg-gray-900 text-gray-100 font-sans min-h-screen p-4 md:p-8">
+<body class="bg-dark text-slate-200 font-sans min-h-screen flex flex-col selection:bg-primary selection:text-white">
 
-    <div class="max-w-5xl mx-auto bg-gray-800 rounded-xl shadow-2xl overflow-hidden border border-gray-700">
+    <header class="sticky top-0 z-50 bg-slate-900/80 backdrop-blur-md border-b border-slate-800">
+        <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center font-bold text-white shadow-lg">
+                    Ch.13
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold tracking-tight hidden sm:block text-slate-100">Financial Statements for Partnerships</h1>
+                    <h1 class="text-lg font-bold tracking-tight sm:hidden text-slate-100">BAFS Ch 13</h1>
+                </div>
+            </div>
+            
+            <nav class="flex space-x-1 bg-slate-950 p-1 rounded-lg border border-slate-800">
+                <button onclick="switchTab('summary')" id="tab-summary" class="tab-btn active bg-primary text-white flex items-center px-3 py-2 rounded-md text-sm font-medium transition-all shadow-md">
+                    <i data-lucide="book-open" class="w-4 h-4 sm:mr-2"></i>
+                    <span class="hidden sm:block">Summary</span>
+                </button>
+                <button onclick="switchTab('mindmap')" id="tab-mindmap" class="tab-btn text-slate-400 hover:text-slate-200 hover:bg-slate-800 flex items-center px-3 py-2 rounded-md text-sm font-medium transition-all">
+                    <i data-lucide="share-2" class="w-4 h-4 sm:mr-2"></i>
+                    <span class="hidden sm:block">Mind Map</span>
+                </button>
+                <button onclick="switchTab('videos')" id="tab-videos" class="tab-btn text-slate-400 hover:text-slate-200 hover:bg-slate-800 flex items-center px-3 py-2 rounded-md text-sm font-medium transition-all">
+                    <i data-lucide="play-circle" class="w-4 h-4 sm:mr-2"></i>
+                    <span class="hidden sm:block">Videos</span>
+                </button>
+                <button onclick="switchTab('practice')" id="tab-practice" class="tab-btn text-slate-400 hover:text-slate-200 hover:bg-slate-800 flex items-center px-3 py-2 rounded-md text-sm font-medium transition-all">
+                    <i data-lucide="pen-tool" class="w-4 h-4 sm:mr-2"></i>
+                    <span class="hidden sm:block">Practice</span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-6xl mx-auto px-4 py-8 w-full">
         
-        <!-- Header -->
-        <header class="bg-gray-900 p-6 border-b border-gray-700 flex items-center gap-3">
-            <i data-lucide="book-open" class="text-purple-400 w-8 h-8"></i>
-            <div>
-                <h1 class="text-2xl font-bold text-white">HKDSE BAFS Chapter 13</h1>
-                <p class="text-gray-400 text-sm mt-1">Financial Statements for Partnerships</p>
-            </div>
-        </header>
-
-        <!-- Navigation Tabs -->
-        <nav class="flex border-b border-gray-700 bg-gray-800/50">
-            <button onclick="switchTab('summary')" id="tab-summary" class="tab-btn flex-1 py-4 text-center font-semibold text-purple-400 border-b-2 border-purple-400 transition-colors">
-                <i data-lucide="info" class="inline w-4 h-4 mr-2 mb-1"></i>Summary
-            </button>
-            <button onclick="switchTab('quiz')" id="tab-quiz" class="tab-btn flex-1 py-4 text-center font-semibold text-gray-400 border-b-2 border-transparent hover:text-gray-200 transition-colors">
-                <i data-lucide="pen-tool" class="inline w-4 h-4 mr-2 mb-1"></i>Practice Quiz
-            </button>
-        </nav>
-
-        <div class="p-6 md:p-8">
-            <!-- SUMMARY VIEW -->
-            <div id="summary" class="tab-content active space-y-8">
+        <!-- ==================== SUMMARY TAB ==================== -->
+        <div id="summary" class="tab-content active space-y-8">
+            
+            <div class="bg-card rounded-xl p-6 md:p-8 border border-slate-700 shadow-xl">
+                <h2 class="text-2xl font-bold text-indigo-400 mb-4 border-b border-slate-700 pb-2 flex items-center gap-2">
+                    <i data-lucide="file-text" class="w-6 h-6"></i> 13.2 Partnership Agreement
+                </h2>
+                <p class="text-slate-300 mb-4">To prevent conflicts, partners agree on major issues before starting a business. Key items include:</p>
+                <ul class="list-none space-y-3 text-slate-300 mb-6">
+                    <li class="flex items-start gap-2"><i data-lucide="check" class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5"></i><span><strong>Capital contribution:</strong> Amount agreed to be contributed (not necessarily equal).</span></li>
+                    <li class="flex items-start gap-2"><i data-lucide="check" class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5"></i><span><strong>Profit and loss sharing ratio:</strong> How P&L is shared (can link to capital/workload).</span></li>
+                    <li class="flex items-start gap-2"><i data-lucide="check" class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5"></i><span><strong>Rate of interest on capital:</strong> Minimum return on capital to reward higher contributors.</span></li>
+                    <li class="flex items-start gap-2"><i data-lucide="check" class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5"></i><span><strong>Rate of interest on drawings:</strong> Discourages partners from taking resources out.</span></li>
+                    <li class="flex items-start gap-2"><i data-lucide="check" class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5"></i><span><strong>Salaries to partners:</strong> Rewards partners who contribute more time and effort.</span></li>
+                </ul>
                 
-                <section>
-                    <h2 class="text-xl font-bold text-purple-300 mb-4 flex items-center gap-2">
-                        <i data-lucide="chevron-right" class="w-5 h-5 text-purple-500"></i>
-                        13.2 Partnership Agreement
-                    </h2>
-                    <div class="bg-gray-900/50 p-5 rounded-lg border border-gray-700 ml-7">
-                        <p class="text-gray-300 mb-3">To prevent conflicts, partners agree on major issues before starting a business. Key items include:</p>
-                        <ul class="list-disc list-inside text-gray-300 space-y-2 mb-4 ml-2">
-                            <li><strong>Capital contribution:</strong> Amount agreed to be contributed (not necessarily equal).</li>
-                            <li><strong>Profit and loss sharing ratio:</strong> How P&L is shared. Can be linked to capital or workload.</li>
-                            <li><strong>Rate of interest on capital:</strong> Minimum return on capital to reward those who contribute more.</li>
-                            <li><strong>Rate of interest on drawings:</strong> Discourages partners from taking resources out of the firm.</li>
-                            <li><strong>Salaries to partners:</strong> Rewards partners who contribute more time and effort.</li>
-                        </ul>
-                        <div class="bg-gray-800 p-4 rounded border border-gray-600 mt-4">
-                            <h3 class="font-bold text-white mb-2">Partnership Ordinance (Chapter 38)</h3>
-                            <p class="text-sm text-gray-400">If there is no agreement: Profits/losses are shared equally, no interest on capital/drawings, no partner salaries, and 8% p.a. interest on advances (loans) from partners.</p>
-                        </div>
-                    </div>
-                </section>
-
-                <section>
-                    <h2 class="text-xl font-bold text-purple-300 mb-4 flex items-center gap-2">
-                        <i data-lucide="chevron-right" class="w-5 h-5 text-purple-500"></i>
-                        13.3 Profit and Loss Appropriation
-                    </h2>
-                    <div class="bg-gray-900/50 p-5 rounded-lg border border-gray-700 ml-7">
-                        <p class="text-gray-300 mb-3">Net profit is not shared immediately. It is appropriated via the <strong>Appropriation Account</strong>:</p>
-                        <div class="font-mono bg-black/40 p-4 rounded text-sm text-gray-300">
-                            Net Profit for the period<span class="float-right">XXX</span><br>
-                            + Interest on drawings<span class="float-right">XX</span><br>
-                            - Interest on capital<span class="float-right">(XX)</span><br>
-                            - Salaries to partners<span class="float-right">(XX)</span><br>
-                            <hr class="border-gray-600 my-2">
-                            = Balance of profit/loss to be shared<span class="float-right">XXX</span>
-                        </div>
-                    </div>
-                </section>
-
-                <section>
-                    <h2 class="text-xl font-bold text-purple-300 mb-4 flex items-center gap-2">
-                        <i data-lucide="chevron-right" class="w-5 h-5 text-purple-500"></i>
-                        Capital vs. Current Accounts
-                    </h2>
-                    <div class="bg-gray-900/50 p-5 rounded-lg border border-gray-700 ml-7 grid md:grid-cols-2 gap-6">
-                        <div>
-                            <h3 class="font-bold text-white mb-2 border-b border-gray-700 pb-2">Fluctuating Capital Accounts</h3>
-                            <p class="text-sm text-gray-400 mb-2">One account per partner. Records ALL items:</p>
-                            <ul class="list-disc list-inside text-sm text-gray-300 space-y-1">
-                                <li>Capital contributed</li>
-                                <li>Profit/Loss shared</li>
-                                <li>Drawings</li>
-                                <li>Interest on capital/drawings</li>
-                                <li>Partner's salary</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-white mb-2 border-b border-gray-700 pb-2">Fixed Capital Accounts</h3>
-                            <p class="text-sm text-gray-400 mb-2">Separates investments from recurring items.</p>
-                            <ul class="list-disc list-inside text-sm text-gray-300 space-y-1">
-                                <li><strong>Capital Account:</strong> Only records capital contributed or withdrawn.</li>
-                                <li><strong>Current Account:</strong> Records all recurring items (profits, drawings, interest, salaries).</li>
-                            </ul>
-                        </div>
-                    </div>
-                </section>
-            </div>
-
-            <!-- QUIZ VIEW -->
-            <div id="quiz" class="tab-content max-w-3xl mx-auto">
-                <div class="bg-gray-900 rounded-xl p-6 md:p-8 border border-gray-700">
-                    <div class="mb-6 flex justify-between items-center">
-                        <span class="text-sm font-semibold text-purple-400 bg-purple-400/10 px-3 py-1 rounded-full" id="quiz-progress">Question 1 of 4</span>
-                        <span class="text-sm text-gray-400" id="quiz-score">Score: 0</span>
-                    </div>
-
-                    <h3 class="text-xl font-bold text-white mb-6" id="quiz-question">Loading...</h3>
-                    
-                    <div class="space-y-3" id="quiz-options">
-                        <!-- Options injected via JS -->
-                    </div>
-
-                    <div id="quiz-feedback" class="mt-6 p-4 rounded-lg hidden">
-                        <!-- Feedback injected via JS -->
-                    </div>
-
-                    <button id="quiz-next" onclick="nextQuestion()" class="mt-6 w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded-lg transition-colors hidden">
-                        Next Question
-                    </button>
+                <div class="bg-slate-900/80 rounded-lg p-5 border border-indigo-500/30 border-l-4 border-l-indigo-500">
+                    <h3 class="text-indigo-300 font-bold mb-2 flex items-center gap-2">
+                        <i data-lucide="scale" class="w-5 h-5"></i> Partnership Ordinance (Chapter 38)
+                    </h3>
+                    <p class="text-sm text-slate-400">If there is <strong class="text-rose-400">NO agreement</strong>, default rules apply:</p>
+                    <ul class="list-disc list-inside mt-2 text-sm text-slate-300 grid sm:grid-cols-2 gap-2">
+                        <li>Profits/losses shared equally</li>
+                        <li>No interest on capital</li>
+                        <li>No interest on drawings</li>
+                        <li>No partner salaries</li>
+                        <li class="sm:col-span-2 text-indigo-200"><strong>8% p.a. interest</strong> on advances (loans) from partners</li>
+                    </ul>
                 </div>
             </div>
 
+            <div class="bg-card rounded-xl p-6 md:p-8 border border-slate-700 shadow-xl">
+                <h2 class="text-2xl font-bold text-indigo-400 mb-4 border-b border-slate-700 pb-2">13.3 Profit and Loss Appropriation</h2>
+                <p class="text-slate-300 mb-4">Net profit is not shared immediately. It is appropriated via the <strong>Appropriation Account</strong>.</p>
+                
+                <div class="bg-slate-950 p-6 rounded-lg font-mono text-sm sm:text-base border border-slate-800 max-w-2xl mx-auto">
+                    <div class="text-center font-bold text-slate-200 mb-4">Appropriation Account Format</div>
+                    <div class="flex justify-between border-b border-slate-700 pb-2 mb-2 text-slate-300">
+                        <span>Net Profit for the period</span><span>XXX</span>
+                    </div>
+                    <div class="flex justify-between text-emerald-400 mb-1">
+                        <span><em>Add:</em> Interest on drawings</span><span>XX</span>
+                    </div>
+                    <div class="flex justify-between text-rose-400 mb-1">
+                        <span><em>Less:</em> Interest on capital</span><span>(XX)</span>
+                    </div>
+                    <div class="flex justify-between text-rose-400 border-b border-slate-700 pb-2 mb-2">
+                        <span><em>Less:</em> Salaries to partners</span><span>(XX)</span>
+                    </div>
+                    <div class="flex justify-between font-bold text-indigo-300 pt-2">
+                        <span>= Balance of profit/loss to be shared</span><span>XXX</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-card rounded-xl p-6 md:p-8 border border-slate-700 shadow-xl">
+                <h2 class="text-2xl font-bold text-indigo-400 mb-6 border-b border-slate-700 pb-2">Capital vs. Current Accounts</h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-slate-900 rounded-lg p-5 border border-slate-800">
+                        <h3 class="text-lg font-bold text-emerald-400 mb-3 text-center border-b border-slate-800 pb-2">Fluctuating Capital Accounts</h3>
+                        <p class="text-sm text-slate-400 mb-4 text-center">One single account per partner.</p>
+                        <ul class="text-sm text-slate-300 space-y-2">
+                            <li class="bg-slate-950 p-2 rounded text-center">Records ALL items (Capital, Drawings, Interests, Salaries, Profit Share)</li>
+                        </ul>
+                    </div>
+                    <div class="bg-slate-900 rounded-lg p-5 border border-slate-800">
+                        <h3 class="text-lg font-bold text-blue-400 mb-3 text-center border-b border-slate-800 pb-2">Fixed Capital Accounts</h3>
+                        <p class="text-sm text-slate-400 mb-4 text-center">Two separate accounts per partner.</p>
+                        <ul class="text-sm text-slate-300 space-y-2">
+                            <li class="bg-slate-950 p-2 rounded"><strong>Capital Account:</strong> ONLY records capital contributed/withdrawn.</li>
+                            <li class="bg-slate-950 p-2 rounded"><strong>Current Account:</strong> Records recurring items (Drawings, Interests, Salaries, Profit).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-card rounded-xl p-6 md:p-8 border border-slate-700 shadow-xl">
+                <h2 class="text-2xl font-bold text-indigo-400 mb-4 border-b border-slate-700 pb-2">13.4 Special Items</h2>
+                <div class="grid sm:grid-cols-2 gap-4">
+                    <div class="bg-slate-900 p-5 rounded-lg border-l-4 border-l-amber-500">
+                        <h4 class="font-bold text-slate-200 mb-2">Salaries Treatment</h4>
+                        <p class="text-sm text-slate-400 mb-1"><strong>Staff Salaries:</strong> Treated as an Operating Expense.</p>
+                        <p class="text-sm text-slate-400"><strong>Partner Salaries:</strong> Treated as an Appropriation of profit.</p>
+                    </div>
+                    <div class="bg-slate-900 p-5 rounded-lg border-l-4 border-l-rose-500">
+                        <h4 class="font-bold text-slate-200 mb-2">Partner Loans</h4>
+                        <p class="text-sm text-slate-400 mb-1"><strong>The Loan:</strong> Treated as a Liability.</p>
+                        <p class="text-sm text-slate-400"><strong>Interest on Loan:</strong> Treated as an <em>Expense</em> (NOT an appropriation).</p>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
+
+        <!-- ==================== MIND MAP TAB ==================== -->
+        <div id="mindmap" class="tab-content">
+            <div class="bg-card rounded-xl p-6 md:p-10 border border-slate-700 shadow-xl min-h-[60vh]">
+                <h2 class="text-2xl font-bold text-indigo-400 mb-2 text-center">Interactive Topic Map</h2>
+                <p class="text-slate-400 text-center mb-8 text-sm">Click on the sections to expand and explore the connections.</p>
+                
+                <div class="max-w-3xl mx-auto space-y-4">
+                    <!-- Root Node -->
+                    <div class="w-full text-center bg-indigo-600 text-white p-4 rounded-xl font-bold text-lg shadow-lg mb-8 relative">
+                        Ch 13: Financial Statements for Partnerships
+                        <div class="absolute w-0.5 h-8 bg-indigo-500 left-1/2 -bottom-8 -translate-x-1/2"></div>
+                    </div>
+
+                    <!-- Branch 1 -->
+                    <div class="border border-slate-700 bg-slate-900 rounded-lg overflow-hidden">
+                        <button onclick="toggleMindMapNode('node-agreement')" class="w-full p-4 flex items-center justify-between text-left hover:bg-slate-800 transition-colors focus:outline-none">
+                            <span class="font-semibold text-emerald-400">1. Partnership Agreement</span>
+                            <i data-lucide="chevron-right" class="w-5 h-5 text-slate-400 mindmap-icon"></i>
+                        </button>
+                        <div id="node-agreement" class="mindmap-children bg-slate-950">
+                            <div class="p-4 border-t border-slate-800 text-sm text-slate-300 space-y-2 pl-8 border-l-2 border-l-emerald-500 ml-4 mb-4">
+                                <p>• Contains terms for Capital, P&L Sharing, Interest rates, and Salaries.</p>
+                                <p>• <strong>Ordinance (No Agreement):</strong> Equal P&L, No Interest/Salaries, 8% Interest on Partner Loans.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Branch 2 -->
+                    <div class="border border-slate-700 bg-slate-900 rounded-lg overflow-hidden">
+                        <button onclick="toggleMindMapNode('node-appropriation')" class="w-full p-4 flex items-center justify-between text-left hover:bg-slate-800 transition-colors focus:outline-none">
+                            <span class="font-semibold text-blue-400">2. Appropriation Account</span>
+                            <i data-lucide="chevron-right" class="w-5 h-5 text-slate-400 mindmap-icon"></i>
+                        </button>
+                        <div id="node-appropriation" class="mindmap-children bg-slate-950">
+                            <div class="p-4 border-t border-slate-800 text-sm text-slate-300 space-y-2 pl-8 border-l-2 border-l-blue-500 ml-4 mb-4">
+                                <p>• Distributes the Net Profit.</p>
+                                <p>• <strong>Add:</strong> Interest on Drawings.</p>
+                                <p>• <strong>Less:</strong> Interest on Capital, Partner Salaries.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Branch 3 -->
+                    <div class="border border-slate-700 bg-slate-900 rounded-lg overflow-hidden">
+                        <button onclick="toggleMindMapNode('node-accounts')" class="w-full p-4 flex items-center justify-between text-left hover:bg-slate-800 transition-colors focus:outline-none">
+                            <span class="font-semibold text-purple-400">3. Capital & Current Accounts</span>
+                            <i data-lucide="chevron-right" class="w-5 h-5 text-slate-400 mindmap-icon"></i>
+                        </button>
+                        <div id="node-accounts" class="mindmap-children bg-slate-950">
+                            <div class="p-4 border-t border-slate-800 text-sm text-slate-300 space-y-2 pl-8 border-l-2 border-l-purple-500 ml-4 mb-4">
+                                <p>• <strong>Fluctuating:</strong> 1 Account handles all transactions.</p>
+                                <p>• <strong>Fixed:</strong> Capital A/C (Investment only) + Current A/C (Recurring items like drawings/profit).</p>
+                                <p>• <strong>Debit Balance in Current:</strong> Overdrawn due to heavy drawings or losses.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Branch 4 -->
+                    <div class="border border-slate-700 bg-slate-900 rounded-lg overflow-hidden">
+                        <button onclick="toggleMindMapNode('node-special')" class="w-full p-4 flex items-center justify-between text-left hover:bg-slate-800 transition-colors focus:outline-none">
+                            <span class="font-semibold text-rose-400">4. Special Items Treatment</span>
+                            <i data-lucide="chevron-right" class="w-5 h-5 text-slate-400 mindmap-icon"></i>
+                        </button>
+                        <div id="node-special" class="mindmap-children bg-slate-950">
+                            <div class="p-4 border-t border-slate-800 text-sm text-slate-300 space-y-2 pl-8 border-l-2 border-l-rose-500 ml-4 mb-4">
+                                <p>• <strong>Partner Salary:</strong> Appropriation (Not an expense).</p>
+                                <p>• <strong>Staff Salary:</strong> Expense.</p>
+                                <p>• <strong>Partner Loan:</strong> Liability.</p>
+                                <p>• <strong>Interest on Loan:</strong> Expense (Not an appropriation).</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== VIDEOS TAB ==================== -->
+        <div id="videos" class="tab-content">
+            <h2 class="text-2xl font-bold text-indigo-400 mb-6 text-center md:text-left">Curated Video Resources</h2>
+            <div class="grid md:grid-cols-2 gap-6 md:gap-8">
+                
+                <!-- Video 1 -->
+                <div class="bg-card rounded-xl overflow-hidden border border-slate-700 shadow-xl flex flex-col">
+                    <div class="p-4 bg-slate-900 border-b border-slate-800 flex justify-between items-center">
+                        <h3 class="font-bold text-slate-200">Video 1</h3>
+                        <i data-lucide="youtube" class="w-5 h-5 text-rose-500"></i>
+                    </div>
+                    <div class="relative pt-[56.25%] bg-black">
+                        <iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/ZOaiizmuoS0" title="Video 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                </div>
+
+                <!-- Video 2 -->
+                <div class="bg-card rounded-xl overflow-hidden border border-slate-700 shadow-xl flex flex-col">
+                    <div class="p-4 bg-slate-900 border-b border-slate-800 flex justify-between items-center">
+                        <h3 class="font-bold text-slate-200">Video 2</h3>
+                        <i data-lucide="youtube" class="w-5 h-5 text-rose-500"></i>
+                    </div>
+                    <div class="relative pt-[56.25%] bg-black">
+                        <iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/g3IkcxPYzGs" title="Video 2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                </div>
+
+                <!-- Video 3 -->
+                <div class="bg-card rounded-xl overflow-hidden border border-slate-700 shadow-xl flex flex-col">
+                    <div class="p-4 bg-slate-900 border-b border-slate-800 flex justify-between items-center">
+                        <h3 class="font-bold text-slate-200">Video 3</h3>
+                        <i data-lucide="youtube" class="w-5 h-5 text-rose-500"></i>
+                    </div>
+                    <div class="relative pt-[56.25%] bg-black">
+                        <iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/evbpB84cgpc" title="Video 3" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                </div>
+
+                <!-- Video 4 -->
+                <div class="bg-card rounded-xl overflow-hidden border border-slate-700 shadow-xl flex flex-col">
+                    <div class="p-4 bg-slate-900 border-b border-slate-800 flex justify-between items-center">
+                        <h3 class="font-bold text-slate-200">Video 4</h3>
+                        <i data-lucide="youtube" class="w-5 h-5 text-rose-500"></i>
+                    </div>
+                    <div class="relative pt-[56.25%] bg-black">
+                        <iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/FgaSX_9IkkE" title="Video 4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ==================== PRACTICE TAB ==================== -->
+        <div id="practice" class="tab-content">
+            <div class="max-w-2xl mx-auto">
+                <div class="bg-card rounded-2xl p-6 md:p-8 border border-slate-700 shadow-2xl relative overflow-hidden">
+                    <!-- Accent Line -->
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-purple-500"></div>
+                    
+                    <div class="flex justify-between items-center mb-6 border-b border-slate-800 pb-4">
+                        <h2 class="text-xl font-bold text-slate-200 flex items-center">
+                            <i data-lucide="brain-circuit" class="mr-2 text-indigo-400 w-6 h-6"></i> Practice Generator
+                        </h2>
+                        <span class="text-xs font-mono bg-slate-900 px-3 py-1 rounded-full text-indigo-400 border border-slate-700 shadow-inner">
+                            Infinite Mode
+                        </span>
+                    </div>
+
+                    <div class="mb-8 min-h-[80px] flex items-center">
+                        <p id="quiz-question" class="text-lg md:text-xl font-medium text-slate-100 leading-relaxed">Loading question...</p>
+                    </div>
+
+                    <div id="quiz-options" class="space-y-3 mb-8">
+                        <!-- Options generated by JS -->
+                    </div>
+
+                    <div id="quiz-feedback" class="p-4 rounded-xl mb-6 text-sm hidden animate-[fadeIn_0.3s_ease-out]">
+                        <!-- Feedback generated by JS -->
+                    </div>
+
+                    <div class="flex justify-end border-t border-slate-800 pt-6 mt-4">
+                        <button id="quiz-next-btn" onclick="loadRandomQuestion()" disabled class="flex items-center px-6 py-3 rounded-lg font-bold transition-all bg-slate-800 text-slate-500 cursor-not-allowed">
+                            Next Question <i data-lucide="chevron-right" class="ml-2 w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+    
+    <footer class="py-6 text-center text-slate-500 text-sm border-t border-slate-900 bg-slate-950 mt-auto">
+        <p>HKDSE BAFS Curriculum • Chapter 13 Educational Resource</p>
+    </footer>
 
     <script>
-        // Initialize Icons
+        // Initialize Lucide Icons
         lucide.createIcons();
 
-        // Tab Logic
+        // --- TAB NAVIGATION LOGIC ---
         function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            // Hide all contents
+            document.querySelectorAll('.tab-content').forEach(el => {
+                el.classList.remove('active');
+            });
+            // Reset all buttons
             document.querySelectorAll('.tab-btn').forEach(el => {
-                el.classList.remove('text-purple-400', 'border-purple-400');
-                el.classList.add('text-gray-400', 'border-transparent');
+                el.classList.remove('active', 'bg-primary', 'text-white', 'shadow-md');
+                el.classList.add('text-slate-400');
             });
             
+            // Show target content
             document.getElementById(tabId).classList.add('active');
-            document.getElementById(`tab-${tabId}`).classList.remove('text-gray-400', 'border-transparent');
-            document.getElementById(`tab-${tabId}`).classList.add('text-purple-400', 'border-purple-400');
+            // Highlight target button
+            const activeBtn = document.getElementById(`tab-${tabId}`);
+            activeBtn.classList.remove('text-slate-400');
+            activeBtn.classList.add('active', 'bg-primary', 'text-white', 'shadow-md');
         }
 
-        // Quiz Logic
-        const QUESTION_BANK = [
+        // --- MIND MAP LOGIC ---
+        function toggleMindMapNode(nodeId) {
+            const container = document.getElementById(nodeId).parentElement;
+            container.classList.toggle('expanded');
+        }
+
+        // --- QUIZ GENERATOR LOGIC (HKDSE Standard) ---
+        const HKDSE_QUESTION_BANK = [
             {
-                question: "How is interest on a partner's loan treated in the financial statements?",
+                question: "According to the Partnership Ordinance, how are profits and losses shared if there is NO partnership agreement?",
                 options: [
-                    "As an appropriation of profit",
-                    "As an expense in the income statement",
-                    "As a direct deduction from the partner's capital",
-                    "As an asset in the statement of financial position"
-                ],
-                correct: 1,
-                explanation: "Interest on a partner's loan is treated as an expense of the partnership, not as an appropriation item, and is recorded in the profit and loss account before net profit is determined."
-            },
-            {
-                question: "In a fixed capital account system, where are a partner's drawings recorded?",
-                options: [
-                    "Capital account",
-                    "Current account",
-                    "Appropriation account",
-                    "Income statement"
-                ],
-                correct: 1,
-                explanation: "Under the fixed capital account system, recurring items such as drawings, interest on capital, and share of profit/loss are recorded in the current account."
-            },
-            {
-                question: "If a partnership has NO agreement, how are profits and losses shared according to the Partnership Ordinance?",
-                options: [
-                    "Based on the ratio of capital contributions",
                     "Equally among all partners",
-                    "Based on the amount of time each partner works",
-                    "The senior partner receives 50%, the rest is shared equally"
+                    "In proportion to capital contributed",
+                    "Based on the seniority of the partners",
+                    "Based on the amount of time worked by each partner"
                 ],
-                correct: 1,
-                explanation: "According to Section 26 of the Partnership Ordinance, if there is no agreement, profits and losses are to be shared equally by all partners."
+                correct: 0,
+                explanation: "Under Section 26 of the Partnership Ordinance, in the absence of an agreement, profits and losses must be shared equally, regardless of capital contributed."
             },
             {
-                question: "How are staff salaries and partners' salaries differentiated in the accounts?",
+                question: "How is a partner's salary treated in the financial statements?",
                 options: [
-                    "Both are treated as expenses",
-                    "Both are treated as appropriations",
-                    "Staff salaries are expenses; partners' salaries are appropriations",
-                    "Staff salaries are appropriations; partners' salaries are expenses"
+                    "As an expense in the Profit and Loss Account",
+                    "As an appropriation of profit after net profit is determined",
+                    "As a deduction directly from the Capital Account",
+                    "As a liability in the Statement of Financial Position"
+                ],
+                correct: 1,
+                explanation: "Partners' salaries are a distribution of profits (an appropriation item), unlike staff salaries which are an operating expense."
+            },
+            {
+                question: "What is the statutory interest rate on a partner's advance (loan) to the firm if the agreement is silent?",
+                options: ["5% per annum", "8% per annum", "10% per annum", "No interest is allowed"],
+                correct: 1,
+                explanation: "The Partnership Ordinance Ch.38 states that partners are entitled to 8% p.a. interest on any advances made beyond their agreed capital contribution."
+            },
+            {
+                question: "Under a Fixed Capital Account system, where is a partner's share of profit recorded?",
+                options: [
+                    "Capital Account",
+                    "Appropriation Account",
+                    "Current Account",
+                    "Income Statement"
                 ],
                 correct: 2,
-                explanation: "Staff salaries are treated as an expense (before net profit is determined), while partners' salaries are treated as an appropriation item (after net profit is determined)."
+                explanation: "In a fixed system, the Capital Account is kept strictly for capital injections/withdrawals. All recurring items like profit share, drawings, and interest go into the Current Account."
+            },
+            {
+                question: "How is INTEREST ON A PARTNER'S LOAN treated in the accounts?",
+                options: [
+                    "Appropriation of profit",
+                    "Operating Expense",
+                    "Addition to Capital",
+                    "Non-current asset"
+                ],
+                correct: 1,
+                explanation: "A partner's loan is treated as a liability, so the interest paid on it is a normal business expense deducted before calculating net profit, NOT an appropriation."
+            },
+            {
+                question: "What does a debit balance in a partner's Current Account indicate?",
+                options: [
+                    "The partner has injected excess capital",
+                    "The firm owes the partner money",
+                    "The partner has undrawn profits",
+                    "The partner has overdrawn their share (drawings exceed accumulated profits)"
+                ],
+                correct: 3,
+                explanation: "A normal current account has a credit balance (firm owes partner). A debit balance means the partner took out more (drawings) than they earned via profit share/salaries."
             }
         ];
 
-        let currentQuestionIndex = 0;
-        let score = 0;
-        let answered = false;
+        let currentQuestionObj = null;
+        let isAnswered = false;
 
-        function loadQuestion() {
-            answered = false;
-            const q = QUESTION_BANK[currentQuestionIndex];
+        function loadRandomQuestion() {
+            isAnswered = false;
             
-            document.getElementById('quiz-progress').textContent = `Question ${currentQuestionIndex + 1} of ${QUESTION_BANK.length}`;
-            document.getElementById('quiz-question').textContent = q.question;
-            
-            const optionsContainer = document.getElementById('quiz-options');
-            optionsContainer.innerHTML = '';
-            
-            q.options.forEach((opt, index) => {
+            // Pick a random question, ensure it's not the exact same one back-to-back if possible
+            let newQ = currentQuestionObj;
+            while(newQ === currentQuestionObj) {
+                newQ = HKDSE_QUESTION_BANK[Math.floor(Math.random() * HKDSE_QUESTION_BANK.length)];
+            }
+            currentQuestionObj = newQ;
+
+            // Update UI
+            document.getElementById('quiz-question').textContent = currentQuestionObj.question;
+            const optionsDiv = document.getElementById('quiz-options');
+            optionsDiv.innerHTML = ''; // clear old options
+
+            currentQuestionObj.options.forEach((opt, index) => {
                 const btn = document.createElement('button');
-                btn.className = 'w-full text-left p-4 rounded-lg border border-gray-700 bg-gray-800 hover:bg-gray-700 transition-colors text-gray-200';
-                btn.textContent = opt;
+                btn.className = 'w-full text-left p-4 rounded-xl border border-slate-700 bg-slate-900/50 hover:bg-slate-700 hover:border-indigo-400 text-slate-300 transition-all duration-200 flex justify-between items-center';
+                
+                // Content wrapper
+                const textSpan = document.createElement('span');
+                textSpan.textContent = opt;
+                btn.appendChild(textSpan);
+                
+                // Icon placeholder (hidden initially)
+                const iconSpan = document.createElement('span');
+                iconSpan.className = 'icon-container';
+                btn.appendChild(iconSpan);
+
                 btn.onclick = () => handleAnswer(index, btn);
-                optionsContainer.appendChild(btn);
+                optionsDiv.appendChild(btn);
             });
 
-            document.getElementById('quiz-feedback').classList.add('hidden');
-            document.getElementById('quiz-next').classList.add('hidden');
-        }
-
-        function handleAnswer(selectedIndex, btnElement) {
-            if (answered) return;
-            answered = true;
-            
-            const q = QUESTION_BANK[currentQuestionIndex];
+            // Hide feedback and disable next button
             const feedbackEl = document.getElementById('quiz-feedback');
-            const options = document.getElementById('quiz-options').children;
-
-            // Disable all buttons
-            Array.from(options).forEach(btn => btn.style.pointerEvents = 'none');
-
-            if (selectedIndex === q.correct) {
-                score++;
-                document.getElementById('quiz-score').textContent = `Score: ${score}`;
-                btnElement.classList.replace('bg-gray-800', 'bg-green-900/50');
-                btnElement.classList.replace('border-gray-700', 'border-green-500');
-                
-                feedbackEl.className = 'mt-6 p-4 rounded-lg bg-green-900/20 border border-green-800 text-green-400 block';
-                feedbackEl.innerHTML = `<strong class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-5 h-5"></i> Correct!</strong><p class="mt-2 text-sm text-gray-300">${q.explanation}</p>`;
-            } else {
-                btnElement.classList.replace('bg-gray-800', 'bg-red-900/50');
-                btnElement.classList.replace('border-gray-700', 'border-red-500');
-                
-                options[q.correct].classList.replace('bg-gray-800', 'bg-green-900/50');
-                options[q.correct].classList.replace('border-gray-700', 'border-green-500');
-
-                feedbackEl.className = 'mt-6 p-4 rounded-lg bg-red-900/20 border border-red-800 text-red-400 block';
-                feedbackEl.innerHTML = `<strong class="flex items-center gap-2"><i data-lucide="x-circle" class="w-5 h-5"></i> Incorrect</strong><p class="mt-2 text-sm text-gray-300">${q.explanation}</p>`;
-            }
-
-            lucide.createIcons();
-            document.getElementById('quiz-next').classList.remove('hidden');
+            feedbackEl.classList.add('hidden');
             
-            if (currentQuestionIndex === QUESTION_BANK.length - 1) {
-                document.getElementById('quiz-next').textContent = "Restart Quiz";
-            }
+            const nextBtn = document.getElementById('quiz-next-btn');
+            nextBtn.disabled = true;
+            nextBtn.className = 'flex items-center px-6 py-3 rounded-lg font-bold transition-all bg-slate-800 text-slate-500 cursor-not-allowed';
         }
 
-        function nextQuestion() {
-            if (currentQuestionIndex < QUESTION_BANK.length - 1) {
-                currentQuestionIndex++;
-                loadQuestion();
+        function handleAnswer(selectedIndex, clickedBtn) {
+            if (isAnswered) return;
+            isAnswered = true;
+
+            const buttons = document.getElementById('quiz-options').children;
+            const feedbackEl = document.getElementById('quiz-feedback');
+            const isCorrect = (selectedIndex === currentQuestionObj.correct);
+
+            // Disable all buttons and style them based on correctness
+            Array.from(buttons).forEach((btn, index) => {
+                btn.disabled = true;
+                btn.classList.remove('hover:bg-slate-700', 'hover:border-indigo-400');
+                
+                const iconContainer = btn.querySelector('.icon-container');
+
+                if (index === currentQuestionObj.correct) {
+                    // This is the correct answer (highlight green)
+                    btn.classList.replace('border-slate-700', 'border-emerald-500');
+                    btn.classList.replace('bg-slate-900/50', 'bg-emerald-500/10');
+                    btn.classList.replace('text-slate-300', 'text-emerald-300');
+                    iconContainer.innerHTML = '<i data-lucide="check-circle-2" class="w-5 h-5 text-emerald-500"></i>';
+                } else if (index === selectedIndex && !isCorrect) {
+                    // This is the wrong answer the user clicked (highlight red)
+                    btn.classList.replace('border-slate-700', 'border-rose-500');
+                    btn.classList.replace('bg-slate-900/50', 'bg-rose-500/10');
+                    btn.classList.replace('text-slate-300', 'text-rose-300');
+                    iconContainer.innerHTML = '<i data-lucide="x-circle" class="w-5 h-5 text-rose-500"></i>';
+                } else {
+                    // Unselected wrong answers (fade out)
+                    btn.classList.add('opacity-50');
+                }
+            });
+
+            // Show Feedback
+            feedbackEl.classList.remove('hidden');
+            if (isCorrect) {
+                feedbackEl.className = 'p-4 rounded-xl mb-6 text-sm bg-emerald-500/10 border border-emerald-500/30 text-emerald-200 animate-[fadeIn_0.3s_ease-out] block';
+                feedbackEl.innerHTML = `<p class="font-bold mb-1 text-emerald-400">Correct!</p><p class="opacity-90">${currentQuestionObj.explanation}</p>`;
             } else {
-                currentQuestionIndex = 0;
-                score = 0;
-                document.getElementById('quiz-score').textContent = `Score: 0`;
-                document.getElementById('quiz-next').textContent = "Next Question";
-                loadQuestion();
+                feedbackEl.className = 'p-4 rounded-xl mb-6 text-sm bg-rose-500/10 border border-rose-500/30 text-rose-200 animate-[fadeIn_0.3s_ease-out] block';
+                feedbackEl.innerHTML = `<p class="font-bold mb-1 text-rose-400">Incorrect</p><p class="opacity-90">${currentQuestionObj.explanation}</p>`;
             }
+
+            // Re-initialize icons for the newly injected HTML
+            lucide.createIcons();
+
+            // Enable Next Button
+            const nextBtn = document.getElementById('quiz-next-btn');
+            nextBtn.disabled = false;
+            nextBtn.className = 'flex items-center px-6 py-3 rounded-lg font-bold transition-all bg-indigo-600 hover:bg-indigo-500 text-white shadow-[0_0_15px_rgba(79,70,229,0.4)]';
         }
 
-        // Init
-        loadQuestion();
+        // Init Quiz on page load
+        loadRandomQuestion();
+
     </script>
 </body>
 </html>
