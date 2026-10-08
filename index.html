@@ -41,23 +41,6 @@
             opacity: 1;
             transform: translateY(0);
         }
-
-        /* Mind Map node animations */
-        .mindmap-children {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .mindmap-children.expanded {
-            max-height: 1000px; /* Increased arbitrary large height to ensure content fits */
-        }
-        .mindmap-icon {
-            transition: transform 0.3s ease;
-        }
-        /* Adjusted selector for rotating the icon */
-        .node-expanded .mindmap-icon {
-            transform: rotate(90deg);
-        }
     </style>
 </head>
 <body class="bg-dark text-slate-200 font-sans min-h-screen flex flex-col selection:bg-primary selection:text-white">
@@ -193,8 +176,8 @@
         <!-- ==================== MIND MAP TAB ==================== -->
         <div id="mindmap" class="tab-content">
             <div class="bg-card rounded-xl p-6 md:p-10 border border-slate-700 shadow-xl min-h-[60vh]">
-                <h2 class="text-2xl font-bold text-indigo-400 mb-2 text-center">Interactive Topic Map</h2>
-                <p class="text-slate-400 text-center mb-8 text-sm">Click on the sections to expand and explore the connections.</p>
+                <h2 class="text-2xl font-bold text-indigo-400 mb-2 text-center">Topic Map</h2>
+                <p class="text-slate-400 text-center mb-8 text-sm">Key concepts and their connections.</p>
                 
                 <div class="max-w-3xl mx-auto space-y-4">
                     <!-- Root Node -->
@@ -204,13 +187,12 @@
                     </div>
 
                     <!-- Branch 1 -->
-                    <div class="border border-slate-700 bg-slate-900 rounded-lg overflow-hidden mindmap-node-container">
-                        <button onclick="toggleMindMapNode(this, 'node-agreement')" class="w-full p-4 flex items-center justify-between text-left hover:bg-slate-800 transition-colors focus:outline-none">
+                    <div class="border border-slate-700 bg-slate-900 rounded-lg overflow-hidden">
+                        <div class="w-full p-4 flex items-center justify-between text-left bg-slate-800/50">
                             <span class="font-semibold text-emerald-400">1. Partnership Agreement</span>
-                            <i data-lucide="chevron-right" class="w-5 h-5 text-slate-400 mindmap-icon"></i>
-                        </button>
-                        <div id="node-agreement" class="mindmap-children bg-slate-950">
-                            <div class="p-4 border-t border-slate-800 text-sm text-slate-300 space-y-2 pl-8 border-l-2 border-l-emerald-500 ml-4 mb-4">
+                        </div>
+                        <div class="bg-slate-950">
+                            <div class="p-4 border-t border-slate-800 text-sm text-slate-300 space-y-2 pl-8 border-l-2 border-l-emerald-500 ml-4 mb-4 mt-4">
                                 <p>• Contains terms for Capital, P&L Sharing, Interest rates, and Salaries.</p>
                                 <p>• <strong>Ordinance (No Agreement):</strong> Equal P&L, No Interest/Salaries, 8% Interest on Partner Loans.</p>
                             </div>
@@ -218,13 +200,12 @@
                     </div>
 
                     <!-- Branch 2 -->
-                    <div class="border border-slate-700 bg-slate-900 rounded-lg overflow-hidden mindmap-node-container">
-                        <button onclick="toggleMindMapNode(this, 'node-appropriation')" class="w-full p-4 flex items-center justify-between text-left hover:bg-slate-800 transition-colors focus:outline-none">
+                    <div class="border border-slate-700 bg-slate-900 rounded-lg overflow-hidden">
+                        <div class="w-full p-4 flex items-center justify-between text-left bg-slate-800/50">
                             <span class="font-semibold text-blue-400">2. Appropriation Account</span>
-                            <i data-lucide="chevron-right" class="w-5 h-5 text-slate-400 mindmap-icon"></i>
-                        </button>
-                        <div id="node-appropriation" class="mindmap-children bg-slate-950">
-                            <div class="p-4 border-t border-slate-800 text-sm text-slate-300 space-y-2 pl-8 border-l-2 border-l-blue-500 ml-4 mb-4">
+                        </div>
+                        <div class="bg-slate-950">
+                            <div class="p-4 border-t border-slate-800 text-sm text-slate-300 space-y-2 pl-8 border-l-2 border-l-blue-500 ml-4 mb-4 mt-4">
                                 <p>• Distributes the Net Profit.</p>
                                 <p>• <strong>Add:</strong> Interest on Drawings.</p>
                                 <p>• <strong>Less:</strong> Interest on Capital, Partner Salaries.</p>
@@ -233,13 +214,12 @@
                     </div>
 
                     <!-- Branch 3 -->
-                    <div class="border border-slate-700 bg-slate-900 rounded-lg overflow-hidden mindmap-node-container">
-                        <button onclick="toggleMindMapNode(this, 'node-accounts')" class="w-full p-4 flex items-center justify-between text-left hover:bg-slate-800 transition-colors focus:outline-none">
+                    <div class="border border-slate-700 bg-slate-900 rounded-lg overflow-hidden">
+                        <div class="w-full p-4 flex items-center justify-between text-left bg-slate-800/50">
                             <span class="font-semibold text-purple-400">3. Capital & Current Accounts</span>
-                            <i data-lucide="chevron-right" class="w-5 h-5 text-slate-400 mindmap-icon"></i>
-                        </button>
-                        <div id="node-accounts" class="mindmap-children bg-slate-950">
-                            <div class="p-4 border-t border-slate-800 text-sm text-slate-300 space-y-2 pl-8 border-l-2 border-l-purple-500 ml-4 mb-4">
+                        </div>
+                        <div class="bg-slate-950">
+                            <div class="p-4 border-t border-slate-800 text-sm text-slate-300 space-y-2 pl-8 border-l-2 border-l-purple-500 ml-4 mb-4 mt-4">
                                 <p>• <strong>Fluctuating:</strong> 1 Account handles all transactions.</p>
                                 <p>• <strong>Fixed:</strong> Capital A/C (Investment only) + Current A/C (Recurring items like drawings/profit).</p>
                                 <p>• <strong>Debit Balance in Current:</strong> Overdrawn due to heavy drawings or losses.</p>
@@ -248,13 +228,12 @@
                     </div>
 
                     <!-- Branch 4 -->
-                    <div class="border border-slate-700 bg-slate-900 rounded-lg overflow-hidden mindmap-node-container">
-                        <button onclick="toggleMindMapNode(this, 'node-special')" class="w-full p-4 flex items-center justify-between text-left hover:bg-slate-800 transition-colors focus:outline-none">
+                    <div class="border border-slate-700 bg-slate-900 rounded-lg overflow-hidden">
+                        <div class="w-full p-4 flex items-center justify-between text-left bg-slate-800/50">
                             <span class="font-semibold text-rose-400">4. Special Items Treatment</span>
-                            <i data-lucide="chevron-right" class="w-5 h-5 text-slate-400 mindmap-icon"></i>
-                        </button>
-                        <div id="node-special" class="mindmap-children bg-slate-950">
-                            <div class="p-4 border-t border-slate-800 text-sm text-slate-300 space-y-2 pl-8 border-l-2 border-l-rose-500 ml-4 mb-4">
+                        </div>
+                        <div class="bg-slate-950">
+                            <div class="p-4 border-t border-slate-800 text-sm text-slate-300 space-y-2 pl-8 border-l-2 border-l-rose-500 ml-4 mb-4 mt-4">
                                 <p>• <strong>Partner Salary:</strong> Appropriation (Not an expense).</p>
                                 <p>• <strong>Staff Salary:</strong> Expense.</p>
                                 <p>• <strong>Partner Loan:</strong> Liability.</p>
@@ -383,17 +362,6 @@
             const activeBtn = document.getElementById(`tab-${tabId}`);
             activeBtn.classList.remove('text-slate-400');
             activeBtn.classList.add('active', 'bg-primary', 'text-white', 'shadow-md');
-        }
-
-        // --- MIND MAP LOGIC ---
-        function toggleMindMapNode(buttonEl, nodeId) {
-            const contentContainer = document.getElementById(nodeId);
-            const parentContainer = buttonEl.closest('.mindmap-node-container');
-            
-            // Toggle the content visibility
-            contentContainer.classList.toggle('expanded');
-            // Toggle class on parent for the icon rotation
-            parentContainer.classList.toggle('node-expanded');
         }
 
         // --- QUIZ GENERATOR LOGIC (HKDSE Standard) ---
