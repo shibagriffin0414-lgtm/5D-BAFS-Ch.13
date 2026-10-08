@@ -49,12 +49,13 @@
             transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .mindmap-children.expanded {
-            max-height: 500px; /* Arbitrary large height for transition */
+            max-height: 1000px; /* Increased arbitrary large height to ensure content fits */
         }
         .mindmap-icon {
             transition: transform 0.3s ease;
         }
-        .expanded .mindmap-icon {
+        /* Adjusted selector for rotating the icon */
+        .node-expanded .mindmap-icon {
             transform: rotate(90deg);
         }
     </style>
@@ -203,8 +204,8 @@
                     </div>
 
                     <!-- Branch 1 -->
-                    <div class="border border-slate-700 bg-slate-900 rounded-lg overflow-hidden">
-                        <button onclick="toggleMindMapNode('node-agreement')" class="w-full p-4 flex items-center justify-between text-left hover:bg-slate-800 transition-colors focus:outline-none">
+                    <div class="border border-slate-700 bg-slate-900 rounded-lg overflow-hidden mindmap-node-container">
+                        <button onclick="toggleMindMapNode(this, 'node-agreement')" class="w-full p-4 flex items-center justify-between text-left hover:bg-slate-800 transition-colors focus:outline-none">
                             <span class="font-semibold text-emerald-400">1. Partnership Agreement</span>
                             <i data-lucide="chevron-right" class="w-5 h-5 text-slate-400 mindmap-icon"></i>
                         </button>
@@ -217,8 +218,8 @@
                     </div>
 
                     <!-- Branch 2 -->
-                    <div class="border border-slate-700 bg-slate-900 rounded-lg overflow-hidden">
-                        <button onclick="toggleMindMapNode('node-appropriation')" class="w-full p-4 flex items-center justify-between text-left hover:bg-slate-800 transition-colors focus:outline-none">
+                    <div class="border border-slate-700 bg-slate-900 rounded-lg overflow-hidden mindmap-node-container">
+                        <button onclick="toggleMindMapNode(this, 'node-appropriation')" class="w-full p-4 flex items-center justify-between text-left hover:bg-slate-800 transition-colors focus:outline-none">
                             <span class="font-semibold text-blue-400">2. Appropriation Account</span>
                             <i data-lucide="chevron-right" class="w-5 h-5 text-slate-400 mindmap-icon"></i>
                         </button>
@@ -232,8 +233,8 @@
                     </div>
 
                     <!-- Branch 3 -->
-                    <div class="border border-slate-700 bg-slate-900 rounded-lg overflow-hidden">
-                        <button onclick="toggleMindMapNode('node-accounts')" class="w-full p-4 flex items-center justify-between text-left hover:bg-slate-800 transition-colors focus:outline-none">
+                    <div class="border border-slate-700 bg-slate-900 rounded-lg overflow-hidden mindmap-node-container">
+                        <button onclick="toggleMindMapNode(this, 'node-accounts')" class="w-full p-4 flex items-center justify-between text-left hover:bg-slate-800 transition-colors focus:outline-none">
                             <span class="font-semibold text-purple-400">3. Capital & Current Accounts</span>
                             <i data-lucide="chevron-right" class="w-5 h-5 text-slate-400 mindmap-icon"></i>
                         </button>
@@ -247,8 +248,8 @@
                     </div>
 
                     <!-- Branch 4 -->
-                    <div class="border border-slate-700 bg-slate-900 rounded-lg overflow-hidden">
-                        <button onclick="toggleMindMapNode('node-special')" class="w-full p-4 flex items-center justify-between text-left hover:bg-slate-800 transition-colors focus:outline-none">
+                    <div class="border border-slate-700 bg-slate-900 rounded-lg overflow-hidden mindmap-node-container">
+                        <button onclick="toggleMindMapNode(this, 'node-special')" class="w-full p-4 flex items-center justify-between text-left hover:bg-slate-800 transition-colors focus:outline-none">
                             <span class="font-semibold text-rose-400">4. Special Items Treatment</span>
                             <i data-lucide="chevron-right" class="w-5 h-5 text-slate-400 mindmap-icon"></i>
                         </button>
@@ -385,9 +386,14 @@
         }
 
         // --- MIND MAP LOGIC ---
-        function toggleMindMapNode(nodeId) {
-            const container = document.getElementById(nodeId).parentElement;
-            container.classList.toggle('expanded');
+        function toggleMindMapNode(buttonEl, nodeId) {
+            const contentContainer = document.getElementById(nodeId);
+            const parentContainer = buttonEl.closest('.mindmap-node-container');
+            
+            // Toggle the content visibility
+            contentContainer.classList.toggle('expanded');
+            // Toggle class on parent for the icon rotation
+            parentContainer.classList.toggle('node-expanded');
         }
 
         // --- QUIZ GENERATOR LOGIC (HKDSE Standard) ---
